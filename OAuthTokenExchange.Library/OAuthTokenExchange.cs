@@ -50,6 +50,7 @@ public class OAuthTokenExchange : IOAuthTokenExchange
     public TokenResult RequestClientCredentialsToken(ClientCredentialsRequest clientCredentialsRequest)
     {
         var request = _automapper.Map<ClientCredentialsTokenRequest>(clientCredentialsRequest);
+        request.ClientCredentialStyle = ClientCredentialStyle.PostBody;
         TokenResponse response = AsyncUtil.RunSync(() => _httpClient.RequestClientCredentialsTokenAsync(request));
         if (response.IsError) throw new Exception($"{response.Error}:{response.ErrorDescription}");
         return _automapper.Map<TokenResult>(response);
